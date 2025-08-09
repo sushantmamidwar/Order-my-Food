@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Foodies Paradise</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.login-page {
+            font-family: Arial, sans-serif;
+            background: url("./registration_back_image\ 3.avif") no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.15);
+            /* transparent white */
+            backdrop-filter: blur(20px);
+            /* blur effect */
+            -webkit-backdrop-filter: blur(10px);
+            /* Safari support */
+            padding: 20px 25px;
+            border-radius: 10px;
+            width: 350px;
+            max-width: 100%;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* subtle border */
+        }
+
+        .login-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #ff6600;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-container button:hover {
+            background: #e65c00;
+        }
+
+        .forgot-password {
+            text-align: right;
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .forgot-password a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+
+        .or-divider {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .or-divider:not(:empty)::before {
+            margin-right: .75em;
+        }
+
+        .or-divider:not(:empty)::after {
+            margin-left: .75em;
+        }
+
+        .google-btn {
+            background: white;
+            border: 1px solid #ccc;
+            color: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .google-btn img {
+            width: 20px;
+            margin-right: 8px;
+        }
+
+        .register-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body class="login-page">
+    <div class="login-container">
+        <h2>Welcome Back!</h2>
+        <form onsubmit="return validateLogin()">
+            <input type="email" placeholder="Email Address" required>
+
+            <!-- Password with Toggle -->
+            <div class="password-field">
+                <input type="password" id="password" placeholder="Password" required>
+                <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+            </div>
+
+            <!-- Forgot Password -->
+            <div class="forgot-password">
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="or-divider">OR</div>
+
+        <!-- Google Sign-In Button -->
+        <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-context="signup" data-ux_mode="popup"
+            data-callback="handleCredentialResponse" data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+            data-text="signup_with" data-size="large" data-logo_alignment="left">
+        </div>
+
+        <!-- Already have account -->
+        <div class="login-link">
+            Already have an account? <a href="login.html">Log in</a>
+        </div>
+    </div>
+
+    <!-- Google Identity Services script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+
+    <script>
+        function togglePassword(id) {
+            let field = document.getElementById(id);
+            field.type = field.type === "password" ? "text" : "password";
+        }
+
+        function validateLogin() {
+            let password = document.getElementById("password").value;
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long!");
+                return false;
+            }
+            return true;
+        }
+
+        function signInWithGoogle() {
+            alert("Redirecting to Google Sign-In...");
+            // Integrate Google Auth API here
+        }
+        // Handle Google Sign-In response
+        function handleCredentialResponse(response) {
+            const data = parseJwt(response.credential);
+            console.log("Google User:", data);
+            alert(`Welcome ${data.name} (${data.email})`);
+            // You can now store user info or redirect
+        }
+
+        function parseJwt(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+    </script>
+</body>
+
+</html>

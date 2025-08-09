@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table Booking - Foodies Paradise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fff7f0;
+        }
+
+        header {
+            background-color: #d35400;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background-color: #ffe6cc;
+        }
+
+        .gallery img {
+            width: 300px;
+            height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+        }
+
+        .booking-section {
+            padding: 2rem;
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #d35400;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #d35400;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #e67e22;
+        }
+
+        .confirmation {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border-radius: 6px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #ffe6cc;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Book Your Table</h1>
+    </header>
+
+    <section class="gallery">
+        <img src="restaurant_table_image\restaurant table_1.avif" alt="Table 1">
+        <img src="restaurant_table_image\restaurant table_2.avif" alt="Table 2">
+        <img src="restaurant_table_image\restaurant table_3.avif" alt="Table 3">
+        <img src="restaurant_table_image\restaurant table_4.avif" alt="Table 3">
+    </section>
+
+    <section class="booking-section">
+        <h2>Reservation Form</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" required />
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" required />
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" required />
+            </div>
+            <div class="form-group">
+                <label for="time">Time</label>
+                <input type="time" id="time" required />
+            </div>
+            <div class="form-group">
+                <label for="partySize">Number of People</label>
+                <select id="partySize" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5+">5 or more</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tableType">Select Table</label>
+                <select id="tableType" required>
+                    <option value="" disabled selected>Select a table</option>
+                    <option value="Royal Corner Table">Royal Corner Table</option>
+                    <option value="Sunset View Table">Sunset View Table</option>
+                    <option value="Family Feast Table">Family Feast Table</option>
+                    <option value="Chef’s Special Table">Chef’s Special Table</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Book Table</button>
+        </form>
+        <div class="confirmation" id="confirmation">
+            <p><i class="fas fa-check-circle"></i> Thank you! Your table has been booked.</p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('confirmation').style.display = 'block';
+            this.reset();
+        });
+    </script>
+
+    <footer>
+        &copy; 2025 FoodExpress| All Rights Reserved | @Sushant_Mamidwar
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Foodies Paradise</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body.register-page {
+            font-family: Arial, sans-serif;
+            background: url("./registration_back_image\ 3.avif") no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+        }
+
+        .registration-container {
+            background: rgba(255, 255, 255, 0.15);
+            /* transparent white */
+            backdrop-filter: blur(20px);
+            /* blur effect */
+            -webkit-backdrop-filter: blur(10px);
+            /* Safari support */
+            padding: 20px 25px;
+            border-radius: 10px;
+            width: 350px;
+            max-width: 100%;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            /* subtle border */
+        }
+
+        .registration-container {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        .registration-container h2 {
+            margin-bottom: 20px;
+            color: #ff6600;
+        }
+
+        .registration-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .strength {
+            font-size: 12px;
+            margin-top: -5px;
+            text-align: left;
+        }
+
+        .strength.weak {
+            color: red;
+        }
+
+        .strength.medium {
+            color: orange;
+        }
+
+        .strength.strong {
+            color: green;
+        }
+
+        .registration-container button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .registration-container button:hover {
+            background: #e65c00;
+        }
+
+        .or-divider {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .or-divider::before,
+        .or-divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .or-divider:not(:empty)::before {
+            margin-right: .75em;
+        }
+
+        .or-divider:not(:empty)::after {
+            margin-left: .75em;
+        }
+
+        .login-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #ff6600;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .terms {
+            font-size: 12px;
+            text-align: left;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body class="register-page">
+    <div class="registration-container">
+        <h2>Create Your Foodies Account</h2>
+        <form onsubmit="return validateForm()">
+            <input type="text" placeholder="Full Name" required>
+            <input type="email" placeholder="Email Address" required>
+
+            <!-- Password with Toggle -->
+            <div class="password-field">
+                <input type="password" id="password" placeholder="Password" required oninput="checkStrength()">
+                <span class="toggle-password" onclick="togglePassword('password')">👁️</span>
+            </div>
+            <div id="strength-text" class="strength"></div>
+
+            <!-- Confirm Password -->
+            <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+
+            <!-- Terms & Conditions -->
+            <div class="terms">
+                <input type="checkbox" id="terms" required> I agree to the <a href="#">Terms & Conditions</a>
+            </div>
+
+            <button type="submit">Register</button>
+        </form>
+
+        <div class="or-divider">OR</div>
+
+        <!-- Google Sign-In Button -->
+        <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID" data-context="signup" data-ux_mode="popup"
+            data-callback="handleCredentialResponse" data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+            data-text="signup_with" data-size="large" data-logo_alignment="left">
+        </div>
+
+        <!-- Already have account -->
+        <div class="login-link">
+            Already have an account? <a href="login.html">Log in</a>
+        </div>
+    </div>
+
+    <!-- Google Identity Services script -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+        function togglePassword(id) {
+            let field = document.getElementById(id);
+            field.type = field.type === "password" ? "text" : "password";
+        }
+
+        function checkStrength() {
+            let pass = document.getElementById("password").value;
+            let strengthText = document.getElementById("strength-text");
+            let strength = 0;
+            if (pass.length >= 6) strength++;
+            if (/[A-Z]/.test(pass)) strength++;
+            if (/[0-9]/.test(pass)) strength++;
+            if (/[^A-Za-z0-9]/.test(pass)) strength++;
+
+            if (strength <= 1) {
+                strengthText.textContent = "Weak";
+                strengthText.className = "strength weak";
+            } else if (strength === 2) {
+                strengthText.textContent = "Medium";
+                strengthText.className = "strength medium";
+            } else {
+                strengthText.textContent = "Strong";
+                strengthText.className = "strength strong";
+            }
+        }
+
+        function validateForm() {
+            let pass = document.getElementById("password").value;
+            let confirmPass = document.getElementById("confirm-password").value;
+            if (pass !== confirmPass) {
+                alert("Passwords do not match!");
+                return false;
+            }
+            return true;
+        }
+
+        // Handle Google Sign-In response
+        function handleCredentialResponse(response) {
+            const data = parseJwt(response.credential);
+            console.log("Google User:", data);
+            alert(`Welcome ${data.name} (${data.email})`);
+            // You can now store user info or redirect
+        }
+
+        function parseJwt(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+    </script>
+</body>
+
+</html>

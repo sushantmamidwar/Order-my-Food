@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room Booking - Hotel Bliss</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f7ff;
+        }
+
+        header {
+            background-color: #5D3FD3;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            background-color: #ece6ff;
+        }
+
+        .gallery img {
+            width: 300px;
+            height: 200px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            object-fit: cover;
+        }
+
+        .booking-section {
+            padding: 2rem;
+            max-width: 600px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .booking-section h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #5D3FD3;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #5D3FD3;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #4b2eb3;
+        }
+
+        .confirmation {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #dff0d8;
+            color: #3c763d;
+            border-radius: 6px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #ece6ff;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Book Your Room</h1>
+    </header>
+
+    <section class="gallery">
+        <img src="restaurant_room_image/room_1.avif" alt="Room 1" />
+        <img src="restaurant_room_image/room_2.avif" alt="Room 2" />
+        <img src="restaurant_room_image/room_3.avif" alt="Room 3" />
+        <img src="restaurant_room_image/room_4.avif" alt="Room 4" />
+    </section>
+
+    <section class="booking-section">
+        <h2>Room Reservation Form</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" required />
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" required />
+            </div>
+            <div class="form-group">
+                <label for="checkin">Check-in Date</label>
+                <input type="date" id="checkin" required />
+            </div>
+            <div class="form-group">
+                <label for="checkout">Check-out Date</label>
+                <input type="date" id="checkout" required />
+            </div>
+            <div class="form-group">
+                <label for="roomType">Room Type</label>
+                <select id="roomType" required>
+                    <option value="" disabled selected>Select Room Type</option>
+                    <option value="Deluxe Room">Deluxe Room</option>
+                    <option value="Suite Room">Suite Room</option>
+                    <option value="Executive Room">Executive Room</option>
+                    <option value="Family Room">Family Room</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="guests">Number of Guests</label>
+                <select id="guests" required>
+                    <option value="" disabled selected>Select</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5+">5 or more</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Book Room</button>
+        </form>
+        <div class="confirmation" id="confirmation">
+            <p><i class="fas fa-check-circle"></i> Thank you! Your room has been booked.</p>
+        </div>
+    </section>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('confirmation').style.display = 'block';
+            this.reset();
+        });
+    </script>
+
+    <footer>
+        &copy; 2025 Hotel Bliss | All Rights Reserved
+    </footer>
+</body>
+
+</html>

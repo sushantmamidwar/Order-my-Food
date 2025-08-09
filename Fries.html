@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fries Shop</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #fffbe6;
+        }
+
+        nav {
+            background-color: #ff6600;
+            /* Orange for Pizza */
+            padding: 20px;
+            color: white;
+            text-align: center;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+            flex-wrap: wrap;
+        }
+
+        .biryani-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            flex: 1 1 60%;
+            padding: 10px;
+        }
+
+        .biryani-item {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .biryani-item:hover {
+            transform: scale(1.03);
+        }
+
+        .biryani-item img {
+            width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .biryani-item h3 {
+            margin: 10px 0 5px;
+        }
+
+        .biryani-item p {
+            color: #444;
+            font-weight: bold;
+        }
+
+        .biryani-item button {
+            padding: 8px 15px;
+            border: none;
+            background-color: green;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        #cart-summary {
+            flex: 1 1 35%;
+            padding: 20px;
+            background-color: #ffe0b3;
+            border-radius: 10px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        #cart-summary ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #cart-summary li {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #cart-summary li span {
+            flex: 1;
+        }
+
+        .remove-btn {
+            background: red;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+        }
+
+        #buy-btn {
+            background-color: #ff6600;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .overlay h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .overlay button {
+            background: #fff;
+            color: #ff6600;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .thank-you {
+            font-size: 1.5em;
+            color: #fff;
+            animation: zoomIn 0.6s ease-in-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        footer {
+            background-color: #ff6600;
+            color: white;
+            text-align: center;
+            padding: 15px;
+
+            width: 100%;
+            bottom: 0;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>🍟 Fries Shop</nav>
+
+    <div class="main-container">
+        <div class="biryani-container" id="biryani-list"></div>
+
+        <div id="cart-summary">
+            <h2>🛒 Cart Summary</h2>
+            <ul id="cart-items"></ul>
+            <p><strong>Total: ₹<span id="cart-total">0</span></strong></p>
+            <button id="buy-btn">Buy</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="buy-overlay">
+        <h2>Select Payment Method</h2>
+        <button class="pay-method" data-method="Cash on Delivery">Cash on Delivery</button>
+        <button class="pay-method" data-method="Google Pay">Google Pay</button>
+        <button class="pay-method" data-method="PhonePe">PhonePe</button>
+    </div>
+
+    <div class="overlay" id="success-overlay">
+        <h2>🎉 Order Placed Successfully!</h2>
+        <p class="thank-you">Your fries are getting crispy! Thank you! 🍟</p>
+        <button onclick="location.href='index.html'">🔙 Back to Home</button>
+    </div>
+
+    <footer>@FoodExpress | SushantMamidwar</footer>
+
+    <script>
+        const biryanis = [
+            { name: "Classic Fries", price: 60, image: "fries_images/fries_image_1.avif" },
+            { name: "Peri Peri Fries", price: 80, image: "fries_images/fries_image_2.avif" },
+            { name: "Masala Fries", price: 70, image: "fries_images/fries_image_3.avif" },
+            { name: "Cheese Fries", price: 85, image: "fries_images/fries_image_4.avif" },
+            { name: "Curly Fries", price: 90, image: "fries_images/fries_image_5.avif" },
+            { name: "Loaded Fries", price: 100, image: "fries_images/fries_image_6.avif" }
+        ];
+
+        const biryaniList = document.getElementById("biryani-list");
+        const cartItems = document.getElementById("cart-items");
+        const cartTotal = document.getElementById("cart-total");
+        const buyBtn = document.getElementById("buy-btn");
+        const buyOverlay = document.getElementById("buy-overlay");
+        const successOverlay = document.getElementById("success-overlay");
+
+        let cart = {};
+
+        function renderBiryanis() {
+            biryaniList.innerHTML = "";
+            biryanis.forEach((biryani, index) => {
+                const item = document.createElement("div");
+                item.className = "biryani-item";
+                item.innerHTML = `
+          <img src="${biryani.image}" alt="${biryani.name}">
+          <h3>${biryani.name}</h3>
+          <p>₹${biryani.price}</p>
+          <button onclick="addToCart(${index})">Add to Cart</button>
+        `;
+                biryaniList.appendChild(item);
+            });
+        }
+
+        function addToCart(index) {
+            const name = biryanis[index].name;
+            if (cart[name]) {
+                cart[name].qty += 1;
+            } else {
+                cart[name] = { ...biryanis[index], qty: 1 };
+            }
+            updateCart();
+        }
+
+        function removeFromCart(name) {
+            if (cart[name]) {
+                cart[name].qty--;
+                if (cart[name].qty <= 0) delete cart[name];
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            cartItems.innerHTML = "";
+            let total = 0;
+            for (let key in cart) {
+                const item = cart[key];
+                total += item.price * item.qty;
+                const li = document.createElement("li");
+                li.innerHTML = `
+          <span>${item.name} x${item.qty} - ₹${item.price * item.qty}</span>
+          <button class="remove-btn" onclick="removeFromCart('${key}')">X</button>
+        `;
+                cartItems.appendChild(li);
+            }
+            cartTotal.textContent = total;
+        }
+
+        buyBtn.addEventListener("click", () => {
+            if (Object.keys(cart).length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            buyOverlay.style.display = "flex";
+        });
+
+        document.querySelectorAll(".pay-method").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                buyOverlay.style.display = "none";
+                setTimeout(() => {
+                    successOverlay.style.display = "flex";
+                }, 300);
+            });
+        });
+
+        renderBiryanis();
+    </script>
+</body>
+
+</html>
